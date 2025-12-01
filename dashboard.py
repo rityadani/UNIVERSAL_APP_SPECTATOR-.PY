@@ -469,9 +469,10 @@ def create_advanced_html():
 """
     
     for app_key, app_spec in data['apps'].items():
-        is_active = data['results'] and data['results']['app_name'] == app_spec['name']
-        status_class = "status-active" if is_active else "status-inactive"
-        status_text = "🟢 Active" if is_active else "⚪ Inactive"
+        # All apps show as active
+        is_active = True
+        status_class = "status-active"
+        status_text = "🟢 Active"
         
         html += f"""
                 <div class="app-card">
@@ -705,12 +706,16 @@ def start_advanced_server():
             else:
                 super().do_GET()
     
-    server = HTTPServer(('localhost', 9000), Handler)
-    print("🚀 Advanced Dashboard running at: http://localhost:9000")
-    print("🎯 Next-Gen RL Management Interface Ready!")
-    print("Press Ctrl+C to stop")
+    import os
+    port = int(os.environ.get('PORT', 9000))
+    host = '0.0.0.0'
+    server = HTTPServer((host, port), Handler)
+    print(f"Dashboard running on {host}:{port}")
+    print("Ready to accept connections")
     
-    webbrowser.open('http://localhost:9000')
+    # Only open browser locally
+    if port == 9000:
+        webbrowser.open(f'http://localhost:{port}')
     
     try:
         server.serve_forever()
