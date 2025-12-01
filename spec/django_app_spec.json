@@ -1,0 +1,57 @@
+{
+  "name": "django-backend",
+  "type": "backend",
+  "version": "1.0.0",
+  "build_command": "pip install -r requirements.txt && python manage.py migrate",
+  "start_command": "python manage.py runserver",
+  "install_command": "pip install -r requirements.txt",
+  "health_endpoint": "http://localhost:8000/admin/",
+  "log_location": "./logs/django.log",
+  "port": 8000,
+  "envs": [
+    {
+      "name": "dev",
+      "url": "http://localhost:8000",
+      "config_file": ".env"
+    },
+    {
+      "name": "prod",
+      "url": "https://django-app.example.com",
+      "config_file": ".env.production"
+    }
+  ],
+  "error_patterns": [
+    {
+      "pattern": "ERROR.*DisallowedHost",
+      "severity": "high",
+      "description": "Django host configuration error"
+    },
+    {
+      "pattern": "OperationalError.*database",
+      "severity": "critical",
+      "description": "Database connection error"
+    },
+    {
+      "pattern": "ImproperlyConfigured",
+      "severity": "high",
+      "description": "Django configuration error"
+    }
+  ],
+  "available_actions": [
+    {
+      "name": "restart_django",
+      "command": "pkill -f 'manage.py runserver' && python manage.py runserver &",
+      "risk_level": "medium"
+    },
+    {
+      "name": "migrate_database",
+      "command": "python manage.py migrate",
+      "risk_level": "medium"
+    },
+    {
+      "name": "collect_static",
+      "command": "python manage.py collectstatic --noinput",
+      "risk_level": "safe"
+    }
+  ]
+}

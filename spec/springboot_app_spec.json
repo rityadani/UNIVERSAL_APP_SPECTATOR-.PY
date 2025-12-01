@@ -1,0 +1,57 @@
+{
+  "name": "springboot-backend",
+  "type": "backend",
+  "version": "1.0.0",
+  "build_command": "./mvnw clean package",
+  "start_command": "java -jar target/app.jar",
+  "install_command": "./mvnw clean install",
+  "health_endpoint": "http://localhost:8080/actuator/health",
+  "log_location": "./logs/spring.log",
+  "port": 8080,
+  "envs": [
+    {
+      "name": "dev",
+      "url": "http://localhost:8080",
+      "config_file": "application-dev.properties"
+    },
+    {
+      "name": "prod",
+      "url": "https://springboot-app.example.com",
+      "config_file": "application-prod.properties"
+    }
+  ],
+  "error_patterns": [
+    {
+      "pattern": "ERROR.*BeanCreationException",
+      "severity": "high",
+      "description": "Spring Bean creation failed"
+    },
+    {
+      "pattern": "ERROR.*DataAccessException",
+      "severity": "critical",
+      "description": "Database access error"
+    },
+    {
+      "pattern": "WARN.*deprecated",
+      "severity": "low",
+      "description": "Deprecated API usage"
+    }
+  ],
+  "available_actions": [
+    {
+      "name": "restart_spring",
+      "command": "pkill -f 'java.*jar' && java -jar target/app.jar &",
+      "risk_level": "medium"
+    },
+    {
+      "name": "rebuild_app",
+      "command": "./mvnw clean package",
+      "risk_level": "safe"
+    },
+    {
+      "name": "check_health",
+      "command": "curl http://localhost:8080/actuator/health",
+      "risk_level": "safe"
+    }
+  ]
+}

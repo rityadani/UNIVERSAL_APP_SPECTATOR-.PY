@@ -1,0 +1,57 @@
+{
+  "name": "fastapi-backend",
+  "type": "backend",
+  "version": "1.0.0",
+  "build_command": "pip install -r requirements.txt",
+  "start_command": "uvicorn main:app --reload",
+  "install_command": "pip install -r requirements.txt",
+  "health_endpoint": "http://localhost:8000/docs",
+  "log_location": "./logs/fastapi.log",
+  "port": 8000,
+  "envs": [
+    {
+      "name": "dev",
+      "url": "http://localhost:8000",
+      "config_file": ".env"
+    },
+    {
+      "name": "prod",
+      "url": "https://fastapi-app.example.com",
+      "config_file": ".env.production"
+    }
+  ],
+  "error_patterns": [
+    {
+      "pattern": "ERROR.*ValidationError",
+      "severity": "medium",
+      "description": "FastAPI validation error"
+    },
+    {
+      "pattern": "ERROR.*500.*Internal Server Error",
+      "severity": "high",
+      "description": "FastAPI internal server error"
+    },
+    {
+      "pattern": "ConnectionError.*database",
+      "severity": "critical",
+      "description": "Database connection failed"
+    }
+  ],
+  "available_actions": [
+    {
+      "name": "restart_fastapi",
+      "command": "pkill -f uvicorn && uvicorn main:app --reload &",
+      "risk_level": "medium"
+    },
+    {
+      "name": "reload_app",
+      "command": "touch main.py",
+      "risk_level": "safe"
+    },
+    {
+      "name": "check_dependencies",
+      "command": "pip check",
+      "risk_level": "safe"
+    }
+  ]
+}

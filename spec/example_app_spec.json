@@ -1,0 +1,67 @@
+{
+  "name": "sample-flask-api",
+  "type": "backend",
+  "version": "1.0.0",
+  "build_command": "pip install -r requirements.txt",
+  "start_command": "python app.py",
+  "install_command": "pip install -r requirements.txt",
+  "health_endpoint": "http://localhost:5000/health",
+  "log_location": "./logs/app.log",
+  "port": 5000,
+  "envs": [
+    {
+      "name": "dev",
+      "url": "http://localhost:5000",
+      "config_file": ".env.dev"
+    },
+    {
+      "name": "stage",
+      "url": "https://api-stage.example.com",
+      "config_file": ".env.stage"
+    },
+    {
+      "name": "prod",
+      "url": "https://api.example.com",
+      "config_file": ".env.prod"
+    }
+  ],
+  "error_patterns": [
+    {
+      "pattern": "ERROR.*500.*Internal Server Error",
+      "severity": "high",
+      "description": "Internal server error - likely code issue"
+    },
+    {
+      "pattern": "ConnectionError.*database",
+      "severity": "critical",
+      "description": "Database connection failed"
+    },
+    {
+      "pattern": "WARNING.*slow query",
+      "severity": "medium",
+      "description": "Performance issue - slow database query"
+    }
+  ],
+  "available_actions": [
+    {
+      "name": "restart_service",
+      "command": "pkill -f app.py && python app.py &",
+      "risk_level": "medium"
+    },
+    {
+      "name": "clear_cache",
+      "command": "redis-cli FLUSHALL",
+      "risk_level": "safe"
+    },
+    {
+      "name": "scale_up",
+      "command": "docker-compose up --scale web=3",
+      "risk_level": "safe"
+    }
+  ],
+  "dependencies": ["requirements.txt"],
+  "docker_config": {
+    "dockerfile": "Dockerfile",
+    "compose_file": "docker-compose.yml"
+  }
+}

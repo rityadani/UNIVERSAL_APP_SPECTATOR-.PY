@@ -1,0 +1,37 @@
+{
+  "name": "backend",
+  "type": "fullstack",
+  "version": "1.0.0",
+  "build_command": "npm run build",
+  "start_command": "node server.js",
+  "install_command": "npm install",
+  "health_endpoint": "http://localhost:8000/health",
+  "log_location": "./logs/app.log",
+  "port": 8000,
+  "envs": [
+    {
+      "name": "dev",
+      "url": "http://localhost:8000",
+      "config_file": ".env"
+    }
+  ],
+  "error_patterns": [
+    {
+      "pattern": "ERROR",
+      "severity": "high",
+      "description": "General error pattern"
+    },
+    {
+      "pattern": "CRITICAL|FATAL",
+      "severity": "critical",
+      "description": "Critical system error"
+    }
+  ],
+  "available_actions": [
+    {
+      "name": "restart_service",
+      "command": "pkill -f backend && node server.js &",
+      "risk_level": "medium"
+    }
+  ]
+}

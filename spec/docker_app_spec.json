@@ -1,0 +1,57 @@
+{
+  "name": "docker-container",
+  "type": "fullstack",
+  "version": "1.0.0",
+  "build_command": "docker build -t myapp .",
+  "start_command": "docker run -p 8080:8080 myapp",
+  "install_command": "docker build -t myapp .",
+  "health_endpoint": "http://localhost:8080/health",
+  "log_location": "docker logs myapp",
+  "port": 8080,
+  "envs": [
+    {
+      "name": "dev",
+      "url": "http://localhost:8080",
+      "config_file": "docker-compose.dev.yml"
+    },
+    {
+      "name": "prod",
+      "url": "https://docker-app.example.com",
+      "config_file": "docker-compose.prod.yml"
+    }
+  ],
+  "error_patterns": [
+    {
+      "pattern": "ERROR.*container.*exited",
+      "severity": "critical",
+      "description": "Docker container crashed"
+    },
+    {
+      "pattern": "ERROR.*port.*already allocated",
+      "severity": "medium",
+      "description": "Port conflict in Docker"
+    },
+    {
+      "pattern": "ERROR.*image.*not found",
+      "severity": "high",
+      "description": "Docker image missing"
+    }
+  ],
+  "available_actions": [
+    {
+      "name": "restart_container",
+      "command": "docker restart myapp",
+      "risk_level": "medium"
+    },
+    {
+      "name": "rebuild_image",
+      "command": "docker build -t myapp . && docker run -p 8080:8080 myapp",
+      "risk_level": "medium"
+    },
+    {
+      "name": "check_logs",
+      "command": "docker logs myapp --tail 50",
+      "risk_level": "safe"
+    }
+  ]
+}

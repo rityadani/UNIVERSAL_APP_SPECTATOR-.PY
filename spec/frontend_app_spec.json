@@ -1,0 +1,58 @@
+{
+  "name": "coinx-frontend",
+  "type": "frontend",
+  "version": "1.0.0",
+  "build_command": "npm run build",
+  "start_command": "npm run dev",
+  "install_command": "npm install",
+  "health_endpoint": "http://localhost:3000",
+  "log_location": "./logs/frontend.log",
+  "port": 3000,
+  "envs": [
+    {
+      "name": "dev",
+      "url": "http://localhost:3000",
+      "config_file": ".env.local"
+    },
+    {
+      "name": "prod",
+      "url": "https://coinx.example.com",
+      "config_file": ".env.production"
+    }
+  ],
+  "error_patterns": [
+    {
+      "pattern": "ERROR.*Failed to compile",
+      "severity": "high",
+      "description": "Build compilation error"
+    },
+    {
+      "pattern": "WARNING.*deprecated",
+      "severity": "medium",
+      "description": "Deprecated package warning"
+    },
+    {
+      "pattern": "ECONNREFUSED.*3000",
+      "severity": "critical",
+      "description": "Frontend server connection refused"
+    }
+  ],
+  "available_actions": [
+    {
+      "name": "restart_dev_server",
+      "command": "pkill -f 'npm run dev' && npm run dev &",
+      "risk_level": "safe"
+    },
+    {
+      "name": "clear_node_modules",
+      "command": "rm -rf node_modules && npm install",
+      "risk_level": "medium"
+    },
+    {
+      "name": "rebuild_project",
+      "command": "npm run build",
+      "risk_level": "safe"
+    }
+  ],
+  "dependencies": ["package.json", "package-lock.json"]
+}
