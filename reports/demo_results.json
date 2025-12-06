@@ -1,87 +1,85 @@
 {
-  "app_name": "nextjs-frontend",
+  "app_name": "backend",
   "total_steps": 4,
   "results": [
     {
       "step": 1,
       "scenario": "normal",
       "state": {
-        "app": "nextjs-frontend",
+        "app": "backend",
         "env": "dev",
         "status": "healthy",
         "error_count": 0,
         "error_severity": "none",
-        "timestamp": "2025-12-01T14:57:55.413031",
+        "timestamp": "2025-12-04T13:11:55.074762",
         "performance_score": 100
       },
-      "action": "restart_nextjs",
-      "reward": 50,
+      "action": null,
+      "reward": 0,
       "action_success": true
     },
     {
       "step": 2,
       "scenario": "error",
       "state": {
-        "app": "nextjs-frontend",
+        "app": "backend",
         "env": "dev",
-        "status": "healthy",
-        "error_count": 0,
-        "error_severity": "none",
-        "timestamp": "2025-12-01T14:57:56.416034",
-        "performance_score": 100
+        "status": "degraded",
+        "error_count": 2,
+        "error_severity": "high",
+        "timestamp": "2025-12-04T13:11:56.076353",
+        "performance_score": 80
       },
-      "action": "restart_nextjs",
-      "reward": 0,
+      "action": "restart_service",
+      "reward": -20,
       "action_success": true
     },
     {
       "step": 3,
       "scenario": "critical",
       "state": {
-        "app": "nextjs-frontend",
+        "app": "backend",
         "env": "dev",
-        "status": "healthy",
-        "error_count": 0,
-        "error_severity": "none",
-        "timestamp": "2025-12-01T14:57:57.417843",
-        "performance_score": 100
+        "status": "degraded",
+        "error_count": 3,
+        "error_severity": "critical",
+        "timestamp": "2025-12-04T13:11:57.076861",
+        "performance_score": 70
       },
-      "action": "restart_nextjs",
-      "reward": 0,
+      "action": "restart_service",
+      "reward": -10,
       "action_success": true
     },
     {
       "step": 4,
       "scenario": "normal",
       "state": {
-        "app": "nextjs-frontend",
+        "app": "backend",
         "env": "dev",
         "status": "healthy",
         "error_count": 0,
         "error_severity": "none",
-        "timestamp": "2025-12-01T14:57:58.419617",
+        "timestamp": "2025-12-04T13:11:58.077272",
         "performance_score": 100
       },
-      "action": "restart_nextjs",
+      "action": null,
       "reward": 0,
       "action_success": true
     }
   ],
   "final_policy": {
-    "app_name": "nextjs-frontend",
-    "q_table_size": 1,
+    "app_name": "backend",
+    "q_table_size": 2,
     "available_actions": [
-      "restart_nextjs",
-      "clear_next_cache",
-      "reinstall_deps"
+      "restart_service"
     ],
     "current_state": {
-      "app": "nextjs-frontend",
+      "app": "backend",
       "env": "dev",
       "status": "healthy",
       "error_count": 0,
       "error_severity": "none",
-      "timestamp": "2025-12-01T14:57:58.419617",
+      "timestamp": "2025-12-04T13:11:58.077272",
       "performance_score": 100
     },
     "epsilon": 0.1
